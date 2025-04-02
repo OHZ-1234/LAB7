@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Weekly Temps by HU ”Oliver" ZHAO</title>
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    svg {
+      background: #f8f8f8;
+    }
+    rect {
+      fill: #3b80c3;
+    }
+    rect:hover {
+      fill: tomato;
+    }
+    .label {
+      font-size: 12px;
+      fill: white;
+      text-anchor: middle;
+    }
+    footer {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+  </style>
+</head>
+<body>
+
+  <h2>D3 Temperature Bar Chart – HU ZHAO</h2>
+  <svg width="700" height="400"></svg>
+
+  <footer>
+    Created by HU ZHAO for GEOG 478 WebGIS Lab 7
+  </footer>
+
+  <script>
+    // Data entered by HU ZHAO
+    const tempData = [
+      { day: 'Mon', val: 61 },
+      { day: 'Tue', val: 64 },
+      { day: 'Wed', val: 68 },
+      { day: 'Thu', val: 71 },
+      { day: 'Fri', val: 73 },
+      { day: 'Sat', val: 70 },
+      { day: 'Sun', val: 66 }
+    ];
+
+    const svg = d3.select("svg");
+    const margin = { top: 40, right: 30, bottom: 50, left: 40 };
+    const w = +svg.attr("width") - margin.left - margin.right;
+    const h = +svg.attr("height") - margin.top - margin.bottom;
+
+    const g = svg.append("g").attr("transform", `translate(${margin.left},${margin.top})`);
+
+    const x = d3.scaleBand()
+      .domain(tempData.map(d => d.day))
+      .range([0, w])
+      .padding(0.15);
+
+    const y = d3.scaleLinear()
+      .domain([0, d3.max(tempData, d => d.val) + 5])
+      .range([h, 0]);
+
+    g.append("g")
+      .attr("transform", `translate(0,${h})`)
+      .call(d3.axisBottom(x));
+
+    g.append("g")
+      .call(d3.axisLeft(y));
+
+    // ALL Bars
+    g.selectAll("rect")
+      .data(tempData)
+      .enter()
+      .append("rect")
+      .attr("x", d => x(d.day))
+      .attr("y", d => y(d.val))
+      .attr("width", x.bandwidth())
+      .attr("height", d => h - y(d.val));
+
+    // ALL Labels
+    g.selectAll(".label")
+      .data(tempData)
+      .enter()
+      .append("text")
+      .attr("class", "label")
+      .attr("x", d => x(d.day) + x.bandwidth() / 2)
+      .attr("y", d => y(d.val) - 6)
+      .text(d => d.val + "°F");
+  </script>
+
+</body>
+</html>
