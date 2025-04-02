@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Weekly Temperature Chart</title>
+    <!-- import Highcharts -->
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+</head>
+<body>
+    <h2 style="text-align: center;">Weekly Temperature (°F)</h2>
+
+    <!-- graph -->
+    <div id="container" style="width: 80%; height: 400px; margin: auto;"></div>
+
+    <script>
+        // the temperature of the place，maybe？
+        const days = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+        const temperatures = [62, 65, 67, 70, 74, 72, 68];
+
+        // chart making
+        Highcharts.chart('container', {
+            chart: {
+                type: 'column' // try line for different appearance
+            },
+            title: {
+                text: 'Weekly Temperature Overview'
+            },
+            xAxis: {
+                categories: days,
+                title: {
+                    text: 'Day of the Week'
+                }
+            },
+            yAxis: {
+                min: 0,
+                title: {
+                    text: 'Temperature (°F)'
+                }
+            },
+            tooltip: {
+                valueSuffix: '°F'
+            },
+            series: [{
+                name: 'Temperature',
+                data: temperatures
+            }]
+        });
+    </script>
+</body>
+</html>
